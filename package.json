@@ -1,0 +1,19 @@
+{
+  "name": "final_project",
+  "version": "1.0.0",
+  "description": "final project for AST class",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gregoirejh/final_project.git"
+  },
+  "author": "Gregoire JorantHouze",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gregoirejh/final_project/issues"
+  },
+  "homepage": "https://github.com/gregoirejh/final_project#readme"
+}
