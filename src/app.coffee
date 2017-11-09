@@ -22,7 +22,7 @@ app.get '/hello/:name', (req, res) ->
   res.send "Hello #{req.params.name}"
   
 app.get '/metrics.json', (req, res) -> 
-  metrics.get (err, data) ->
+  metrics.get 0,(err, data) ->
     throw next err if err
     res.status(200).json data
     
