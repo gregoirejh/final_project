@@ -7,22 +7,40 @@ block head
   script(type="text/javascript" src="/js/bootstrap.min.js" charset="utf-8")
   script(type="text/javascript" src="/js/index.js" charset="utf-8")
   link(rel='stylesheet', href='/css/bootstrap.min.css')
+  link(rel='stylesheet', href='/css/main.css')
   link(rel='stylesheet', href='/css/bootstrap-theme.min.css')
 
 block content  
   div.container
-    div.col-md-6.col-md-offset-3
-      p #{text}
-      button#show-metrics(type="button" class="btn btn-success") Bring the metrics
+    div.col-md-12
+      h1 #{text}
+      button#show-metrics(type="button" class="btn btn-default") Bring my metrics
       #metrics
+      div.chart
       
   script 
     :coffee-script
+      $('.chart').hide()
+      
       $('#show-metrics').click (e) ->
         e.preventDefault()
-        $.getJSON "/metrics.json", {}, (data) ->
-          content = "<ul>"
-          for d in data
-            content += "<li>timestamp: #{d.timestamp}, value: #{d.value}</li>"
-          content += "</ul>"
-          $('#metrics').append content
+        $.get "/metrics.json", {}, (data) ->
+          row = d3.select(".chart")
+            .selectAll("div")
+            .data(data)
+              .enter()
+              .append("div")
+              .attr('class', 'row')
+          row
+              .append("div")
+                .attr('class', 'lab col-sm-3')
+                .text (d) -> return Date(d.key.split(':')[2])
+          row
+              .append("div")
+                .attr('class', 'bar col-sm-9')
+                .style "width", (d) -> return 30*d.value + "px"
+                .text (d) -> return  d.value
+          $('.chart').show()
+
+
+
