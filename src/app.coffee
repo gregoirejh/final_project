@@ -21,16 +21,20 @@ app.get '/', (req, res) ->
 app.get '/hello/:name', (req, res) ->
   res.send "Hello #{req.params.name}"
   
-app.get '/metrics.json', (req, res) ->
+app.get '/metrics.json', (req, res, next) ->
   metrics.get null,(err, data) ->
     throw next err if err
     res.status(200).json data
-  
     
-app.post '/metrics.json/:id', (req, res) -> 
-  metrics.save req.params.id, req.body, (err) ->
+app.post '/metrics.json', (req, res, next) -> 
+  metrics.save req.body.id, req.body.metrics, (err) ->
     throw next err if err 
-    res.status(200).send 'metrics saved'
+    res.status(201).json { created: 1, deleted: 0 }
+
+app.delete '/metrics.json/:key', (req, res, next) ->
+  metrics.del req.params.key, (err, element) ->
+    throw next err if err
+    res.status(200).json { created: 0, deleted: 1 }
 
 app.listen app.get('port'), () ->
   console.log "Server listening on #{app.get 'port'} !"
