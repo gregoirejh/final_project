@@ -8,10 +8,12 @@ module.exports =
   # Get metrics 
   # - id: metric's id 
   # - callback: the callback function, callback(err, data)
-  get: (id, callback) ->
-    rs = db.createReadStream({keys: true, values: false})
-    rs.on 'data', callback
-    rs.end()
+  get: (id,callback) ->
+    rs = db.createReadStream()
+    result = []
+    rs.on 'data', (data) -> result.push(data)
+    rs.on 'error', (err) -> callback err,null
+    rs.on 'close', () -> callback null, result
     
   # save(id, metrics, callback)
   # Save given metrics 

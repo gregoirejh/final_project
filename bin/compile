@@ -32,7 +32,7 @@ main() {
     ;;
     
   *) 
-    if [[ ! -z "$1" ]]; then 
+    if [[ -z "$1" ]]; then 
       echo "Compiling everything"
       compileCoffee
       compilePug

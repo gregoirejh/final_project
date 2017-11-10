@@ -21,10 +21,11 @@ app.get '/', (req, res) ->
 app.get '/hello/:name', (req, res) ->
   res.send "Hello #{req.params.name}"
   
-app.get '/metrics.json', (req, res) -> 
-  metrics.get 0,(err, data) ->
+app.get '/metrics.json', (req, res) ->
+  metrics.get null,(err, data) ->
     throw next err if err
     res.status(200).json data
+  
     
 app.post '/metrics.json/:id', (req, res) -> 
   metrics.save req.params.id, req.body, (err) ->
