@@ -11,6 +11,7 @@ block head
   link(rel='stylesheet', href='/css/bootstrap-theme.min.css')
 
 block content  
+  button.btn.btn-danger(href='/logout' onClick='document.location.href="/logout"') Logout
   div.container
     div.col-md-12
       h1 #{text}
