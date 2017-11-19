@@ -53,6 +53,9 @@ app.post '/login', (req, res) ->
       req.session.jwt = token.encrypt req.body.username
       res.redirect '/'
 
+app.get '/signin', (req, res) ->
+  res.render 'signin'
+
 app.post '/signin', (req, res) ->
   { username, password } = req.body
   user.save { username, password }, (err, result) ->
