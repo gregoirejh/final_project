@@ -2,19 +2,10 @@
 
 module.exports = (db) ->
   get: (username, callback) ->
-    user = {}
-    rs = db.createReadStream
-      gte: "user:#{username}"   
-    rs.on 'data', (data) ->
-      user.value = data.value
-      user.key = data.key
-    rs.on 'error', callback
-    rs.on 'close', ->
-      callback null, user
+    db.get "user:#{username}", callback
 
-    
-  save: (id, metrics, callback) -> 
-    #TODO
+  save: (user, callback) -> 
+    db.put "user:#{user.username}", user.password, callback
 
   remove: (username, callback) ->
-   #TODO
+    db.del "user:#{user.username}", callback

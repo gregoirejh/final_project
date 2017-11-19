@@ -1,0 +1,16 @@
+block content
+  #form
+    p Signin
+    hr
+    form#login(action='/signin', method="post")
+      .form-group
+        label Username
+        input(type='text', name="username")
+      .form-group
+        label Password
+        input(type='password', name="password")
+      button#login_submit.btn.btn-primary.btn-block(type='submit')
+        i.icon-ok.icon-white
+        |  Create an account
+      hr
+      button.btn.btn-success.btn-block(type='button', href='/login') Already have an account ?

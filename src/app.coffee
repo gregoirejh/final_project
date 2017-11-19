@@ -9,68 +9,36 @@ metricDb = require('./db') "#{__dirname}/../db/user"
 metrics = require('./metrics')(metricDb)
 user  = require('./user')(userDb)
 
+token = require('./token')
+
+authCheck = (req, res, next) ->
+  unless req.session.jwt
+    res.redirect '/login'
+  else
+    next()
 
 app = express()
 
-app.set 'port', '8888'
-app.set 'views', "#{__dirname}/../views"
-app.set 'view engine', 'pug'
+# MIDDLEWARES
 
+app.use bodyparser.urlencoded({ extended: true })
 app.use bodyparser.json()
-app.use bodyparser.urlencoded()
-
-app.use '/', express.static "#{__dirname}/../public"
-
-#app.get '/', (req, res) ->
-#  res.render 'index', 
-#    text: "Hey ! Here your can bring your metrics !"
-
-app.get '/hello/:name', (req, res) ->
-  res.send "Hello #{req.params.name}, here your can bring your metrics !"
-  
-app.get '/metrics.json', (req, res, next) ->
-  metrics.get null,(err, data) ->
-    throw next err if err
-    res.status(200).json data
-    
-app.post '/metrics.json', (req, res, next) -> 
-  metrics.save req.body.id, req.body.metrics, (err) ->
-    throw next err if err 
-    res.status(201).json { created: 1, deleted: 0 }
-
-app.delete '/metrics.json/:key', (req, res, next) ->
-  metrics.del req.params.key, (err, element) ->
-    throw next err if err
-    res.status(200).json { created: 0, deleted: 1 }
-
-
-## USer
-#user_router = express.Router()
-
-
-#middleware = (req, res, next) ->
-#  console.log "#{req.method} on #{req.url}"
-#  next()
-
-#user_router.use middleware
-#user_router.get '/login', (req, res) ->
-#  # route logic
-#app.use router
-
 app.use session
   secret: 'MyAppSecret'
   store: new LevelStore './db/sessions'
   resave: true
   saveUninitialized: true
+app.set 'port', '8888'
+app.set 'views', "#{__dirname}/../views"
+app.set 'view engine', 'pug'
+app.use '/', express.static "#{__dirname}/../public"
 
-authCheck = (req, res, next) ->
-  unless req.session.loggedIn == true
-    res.redirect '/login'
-  else
-    next()
+# MAIN
 
 app.get '/', authCheck, (req, res) ->
-  res.render 'index', name: req.session.username
+  res.render 'index', name: token.decrypt(req.session.jwt).email
+
+# LOGIN
 
 app.get '/login', (req, res) ->
   res.render 'login'
@@ -82,18 +50,39 @@ app.post '/login', (req, res) ->
       console.log "unvalid username"
       res.redirect '/login'
     else
-      req.session.loggedIn = true
-      req.session.username = data.username
+      req.session.jwt = token.encrypt req.body.username
       res.redirect '/'
 
+app.post '/signin', (req, res) ->
+  { username, password } = req.body
+  user.save { username, password }, (err, result) ->
+    throw err if err
+    res.redirect '/login'
+
 app.get '/logout', (req, res) ->
-  delete req.session.loggedIn
-  delete req.session.username
+  delete req.session.jwt
   res.redirect '/login'
 
+# METRICS
 
+app.get '/metrics.json', authCheck, (req, res, next) ->
+  email = token.decrypt(req.session.jwt).email
+  metrics.get null, (err, data) ->
+    throw next err if err
+    res.status(200).json data.filter (metric) -> metric.key.includes email
+    
+app.post '/metrics.json', authCheck, (req, res, next) -> 
+  email = token.decrypt(req.session.jwt).email
+  metrics.save email, req.body.metrics, (err) ->
+    throw next err if err 
+    res.status(201).json { created: 1, deleted: 0 }
 
-
+app.delete '/metrics.json/:key', authCheck, (req, res, next) ->
+  email = token.decrypt(req.session.jwt).email
+  throw new Error 'Unauthorized' if !req.params.key.includes email
+  metrics.del req.params.key, (err, element) ->
+    throw next err if err
+    res.status(200).json { created: 0, deleted: 1 }
 
 
 app.listen app.get('port'), () ->
