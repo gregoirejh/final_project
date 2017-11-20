@@ -1,0 +1,13 @@
+block content
+  #form
+    p add metrics
+    hr
+    form#login(action='/metrics.json', method="post")
+      .form-group
+        label Value
+        input(type='text', name="value")
+      button#login_submit.btn.btn-primary.btn-block(type='submit')
+        i.icon-ok.icon-white
+        |  Insert My metrics
+      hr
+      button.btn.btn-success.btn-block(type='button', href='/login', onClick='document.location.href="/"') Home
