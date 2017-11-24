@@ -107,12 +107,9 @@ app.get '/metrics.json', authCheck, (req, res, next) ->
     
 app.post '/metrics.json', authCheck, (req, res, next) -> 
   username = token.decrypt(req.session.jwt).username
-  console.log req.body.value
-  metrics = []
-  metrics.save username, req.body.metrics, (err) ->
+  metrics.save(username, [{ value: req.body.value, timestamp: Date.now() }], (err) ->
     throw next err if err 
-    res.redirect '/'
-    #res.status(201).json { created: 1, deleted: 0 }
+    res.redirect '/')
 
 app.delete '/metrics.json/:key', authCheck, (req, res, next) ->
   username = token.decrypt(req.session.jwt).username
