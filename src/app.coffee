@@ -1,6 +1,7 @@
 express = require 'express'
 bodyparser = require 'body-parser'
 session = require 'express-session'
+flatten = require 'lodash.flatten'
 LevelStore = require('level-session-store')(session)
 morgan = require 'morgan'
 errorhandler = require 'errorhandler'
@@ -103,13 +104,13 @@ app.get '/Logging', (req,res) ->
 
 app.get '/metrics.json', authCheck, (req, res, next) ->
   username = token.decrypt(req.session.jwt).username
-  metrics.get null, (err, data) ->
+  metrics.get (err, data) ->
     throw next err if err
     res.status(200).json data.filter (metric) -> metric.key.includes username
 
 app.post '/metrics.json', authCheck, (req, res, next) -> 
   username = token.decrypt(req.session.jwt).username
-  metrics.save(username, req.body.metrics, (err) ->
+  metrics.save(username, flatten([req.body.value]), (err) ->
     throw next err if err
     res.redirect '/')
 
@@ -122,5 +123,3 @@ app.delete '/metrics.json/:key', authCheck, (req, res, next) ->
 
 server.listen app.get('port'), () ->
   console.log "Server listening on #{app.get 'port'} !"
-
-

@@ -36,6 +36,10 @@ metricsToInsert = flatten([
 ,
 ])
 
+metrics.save "admin", metricsToInsert, (err) ->
+  throw err if err 
+  console.log "Population terminated for user admin!"
+
 metricsToInsert = flatten([
   timestamp:(new Date "2013-11-04 14:00 UTC").getTime(), value:35
 ,

@@ -13,6 +13,7 @@ block head
 block content  
   button.btn.btn-danger(href='/logout' onClick='document.location.href="/logout"') Logout
   button.btn.btn-success(href='/addMetrics' onClick='document.location.href="/addMetrics"') Add Metrics !
+  select.form-control(class='collections')
   div.container
     div.col-md-12
       h1 #{text}
@@ -24,6 +25,21 @@ block content
     :coffee-script
       $('.chart').hide()
       
+      $.get '/metrics.json', {}, (data) ->
+        collections = data.reduce (acc, item) ->
+          console.log(item)
+          collection = item.key.split(':')[1]
+          if acc.indexOf(collection) == -1
+            acc.push(collection)
+          return acc
+        , []
+        
+        $('.collections').empty()
+
+        html = collections.map (collection) ->
+          "<option value=" + collection + ">" + collection + "</option>"
+        $('.collections').html(html.join(''))
+
       $('#show-metrics').click (e) ->
         e.preventDefault()
         $.get "/metrics.json", {}, (data) ->
