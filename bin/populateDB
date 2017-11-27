@@ -1,20 +1,48 @@
 #!/usr/bin/env coffee
 
+userDb  = require("#{__dirname}/../src/db") "#{__dirname}/../db/user"
+metricDb = require("#{__dirname}/../src/db") "#{__dirname}/../db"
+
+metrics = require("#{__dirname}/../src/metrics") metricDb
+user  = require("#{__dirname}/../src/user") userDb
+
 flatten = require "lodash.flatten"
 minimist = require "minimist"
-metrics = require "#{__dirname}/../src/metrics"
 
-args = minimist(process.argv).metric
-metricsItems = flatten([args]).map(JSON.parse)
-toInsert = flatten([
-  timestamp:(new Date '2013-11-04 14:00 UTC').getTime(), value:12
+metricsArgs = minimist(process.argv).metric
+
+user.save { username: "admin", password: "admin" }, (err) ->
+  throw err if err 
+  console.log "User admin has been created with password admin"
+
+user.save { username: "elliot@ece.fr", password: "root" }, (err) ->
+  throw err if err
+  console.log "User elliot@ece.fr has been created with password root"
+
+metricsItems = if metricsArgs then flatten([metricsArgs]).map(JSON.parse) else []
+
+metricsToInsert = flatten([
+  timestamp:(new Date "2013-11-04 14:00 UTC").getTime(), value:12
 ,
-  timestamp:(new Date '2013-11-04 14:10 UTC').getTime(), value:13
+  timestamp:(new Date "2013-11-04 14:10 UTC").getTime(), value:13
+,
+  timestamp:(new Date "2013-11-04 14:20 UTC").getTime(), value:9
+,
+  timestamp:(new Date "2013-11-04 11:20 UTC").getTime(), value:20
+,
+  timestamp:(new Date "2013-11-04 13:20 UTC").getTime(), value:25
 ,
   metricsItems
 ,
 ])
 
-metrics.save "populated", toInsert, (err) ->
+metricsToInsert = flatten([
+  timestamp:(new Date "2013-11-04 14:00 UTC").getTime(), value:35
+,
+  timestamp:(new Date "2013-11-04 14:10 UTC").getTime(), value:45
+,
+])
+
+metrics.save "elliot@ece.fr", metricsToInsert, (err) ->
   throw err if err 
-  console.log "population terminated !"
+  console.log "Population terminated for user elliot@ece.fr!"

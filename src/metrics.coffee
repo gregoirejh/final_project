@@ -1,4 +1,5 @@
 
+uuid = require 'uuid/v4'
 
 module.exports =  (db) ->
   # get(id, callback)
@@ -18,12 +19,12 @@ module.exports =  (db) ->
   # - callback: the callback function
   save: (user, metrics, callback) -> 
     ws = db.createWriteStream()
-    ws.on 'error', callback 
+    ws.on 'error', callback
     ws.on 'close', callback 
     for metric in metrics 
       { timestamp, value } =  metric
       ws.write 
-        key: "metric:#{user}:#{timestamp}"
+        key: "metric:#{user}:#{uuid()}"
         value: value
     ws.end()
 

@@ -3,34 +3,15 @@ bodyparser = require 'body-parser'
 session = require 'express-session'
 LevelStore = require('level-session-store')(session)
 
-userDb  = require('./db') "#{__dirname}/../db"
-metricDb = require('./db') "#{__dirname}/../db/user"
+userDb  = require('./db') "#{__dirname}/../db/user"
+metricDb = require('./db') "#{__dirname}/../db"
 
 metrics = require('./metrics')(metricDb)
 user  = require('./user')(userDb)
 
 token = require('./token')
 
-
-
-authCheck = (req, res, next) ->
-  unless req.session.jwt
-    res.redirect '/login'
-  else
-    next()
-
-logging_middleware = (req,res,next) ->
-  for socket, i in sockets 
-    socket.emit 'logs',
-      username: 
-        if !req.session.jwt then 'anonymous' 
-        else token.decrypt(req.session.jwt).username
-      url: req.url
-  next()
-
-
 app = express()
-
 server = require('http').Server(app)
 io = require('socket.io') server
 
@@ -39,10 +20,22 @@ sockets = []
 io.on 'connection', (socket) ->
   sockets.push socket
 
-
-
-
 # MIDDLEWARES
+
+logging_middleware = (req, res,next) ->
+  for socket, i in sockets 
+    socket.emit 'logs',
+      username: 
+        if !req.session.jwt then 'anonymous' 
+        else token.decrypt(req.session.jwt).username
+      url: req.url
+  next()
+
+authCheck = (req, res, next) ->
+  unless req.session.jwt
+    res.redirect '/login'
+  else
+    next()
 
 app.use bodyparser.urlencoded({ extended: true })
 app.use bodyparser.json()
@@ -104,11 +97,11 @@ app.get '/metrics.json', authCheck, (req, res, next) ->
   metrics.get null, (err, data) ->
     throw next err if err
     res.status(200).json data.filter (metric) -> metric.key.includes username
-    
+
 app.post '/metrics.json', authCheck, (req, res, next) -> 
   username = token.decrypt(req.session.jwt).username
-  metrics.save(username, [{ value: req.body.value, timestamp: Date.now() }], (err) ->
-    throw next err if err 
+  metrics.save(username, req.body.metrics, (err) ->
+    throw next err if err
     res.redirect '/')
 
 app.delete '/metrics.json/:key', authCheck, (req, res, next) ->
@@ -117,8 +110,6 @@ app.delete '/metrics.json/:key', authCheck, (req, res, next) ->
   metrics.del req.params.key, (err, element) ->
     throw next err if err
     res.status(200).json { created: 0, deleted: 1 }
-
-
 
 server.listen app.get('port'), () ->
   console.log "Server listening on #{app.get 'port'} !"
