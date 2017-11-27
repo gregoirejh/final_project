@@ -2,6 +2,9 @@ express = require 'express'
 bodyparser = require 'body-parser'
 session = require 'express-session'
 LevelStore = require('level-session-store')(session)
+morgan = require 'morgan'
+errorhandler = require 'errorhandler'
+
 
 userDb  = require('./db') "#{__dirname}/../db/user"
 metricDb = require('./db') "#{__dirname}/../db"
@@ -19,6 +22,12 @@ sockets = []
 
 io.on 'connection', (socket) ->
   sockets.push socket
+
+if process.env.NODE_ENV is 'development'
+  console.log "dev"
+  app.use errorhandler() #require
+  app.use morgan 'dev'
+else app.use morgan 'common'
 
 # MIDDLEWARES
 
