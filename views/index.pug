@@ -12,7 +12,7 @@ block head
 block content  
   div.container
     div.row.justify-content-end
-      div.col-md-3.col-3.mt-2
+      div.col-md-3.col-md-3.mt-2
         button.btn.btn-warning.mr-3(href='/logs' onClick='window.open(document.location.href="/logging"); return false;') Logs
         button.btn.btn-danger.mr-3(href='/logout' onClick='document.location.href="/logout"') Logout
     div.row
@@ -24,10 +24,11 @@ block content
           button.btn.btn-success.ml-2(href='/addMetrics' onClick='document.location.href="/addMetrics"') Add Metrics !
         div.row.justify-content-center.mt-4
           button.btn.btn-primary(type="button" id="show-metrics") Bring my metrics
-    div.row
+    div.row.mt-3
       div.col-md-12
-        div.chartComponent
-          svg.chart(width="960" height="500")
+        div.row.justify-content-center
+          div.chartComponent
+            svg.chart(width="960" height="500")
       
       
   script 

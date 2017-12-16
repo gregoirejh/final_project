@@ -1,16 +1,20 @@
+block head
+  // Here will go our css/js links
+  script(type="text/javascript" src="/js/d3.v4.min.js" charset="utf-8")
+  script(type="text/javascript" src="/js/jquery-3.2.1.min.js" charset="utf-8")
+  script(type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js" charset="utf-8")
+  script(type="text/javascript" src="/js/index.js" charset="utf-8")
+  link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css')
+  link(rel='stylesheet', href='/css/main.css')
+
 block content
-  #form
-    p Signin
-    hr
-    form#login(action='/signin', method="post")
+  #form.container-flex.w-25.ml-auto.mr-auto.mt-5
+    form#signin(action='/signin', method="post")
       .form-group
-        label Username
-        input(type='text', name="username")
+        input.form-control(type='text', name="username", placeholder="Username")
       .form-group
-        label Password
-        input(type='password', name="password")
-      button#login_submit.btn.btn-primary.btn-block(type='submit')
-        i.icon-ok.icon-white
-        |  Create an account
-      hr
-      button.btn.btn-success.btn-block(type='button', href='/login', onClick='document.location.href="/login"') Already have an account ?
+        input.form-control(type='password', name="password",, placeholder="Password")
+      .container
+        button#signin_submit.btn.btn-primary.btn-block(type='submit') Signin
+        hr
+        button.btn.btn-success.btn-block(type='button', href='/login', onClick='document.location.href="/login"') Already have an account ?
