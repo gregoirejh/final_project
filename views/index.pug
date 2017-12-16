@@ -22,8 +22,10 @@ block content
   div.container
     div.col-md-12
       h1 #{text}
-      #metrics
-      div.chart
+      button#show-metrics(type="button" class="btn btn-default") Bring my metrics
+      div.chartComponent
+        svg.chart(width="960" height="500")
+      
       
   script 
     :coffee-script
@@ -31,7 +33,6 @@ block content
       
       $.get '/metrics.json', {}, (data) ->
         collections = data.reduce (acc, item) ->
-          console.log(item)
           collection = item.key.split(':')[1]
           if acc.indexOf(collection) == -1
             acc.push(collection)
@@ -46,22 +47,60 @@ block content
 
       $('#show-metrics').click (e) ->
         e.preventDefault()
+        keyValue = $('.collections').val()
+
         $.get "/metrics.json", {}, (data) ->
-          row = d3.select(".chart")
-            .selectAll("div")
-            .data(data)
-              .enter()
-              .append("div")
-              .attr('class', 'row')
-          row
-              .append("div")
-                .attr('class', 'lab col-sm-3')
-                .text (d) -> return Date(d.key.split(':')[2])
-          row
-              .append("div")
-                .attr('class', 'bar col-sm-9')
-                .style "width", (d) -> return 30*d.value + "px"
-                .text (d) -> return  d.value
+    
+          selectedData = data.reduce (acc, item) ->
+            if item.key.split(':')[1] == keyValue
+              acc.push(item)
+            return acc
+          , []
+
+          selectedData.sort((x,y) -> parseInt(x.key.split(':')[2])-parseInt(y.key.split(':')[2]))
+
+          margin = {top: 20, right: 20, bottom: 30, left: 50}
+          width = 960 - margin.left - margin.right
+          height = 500 - margin.top - margin.bottom
+
+          parseTime = d3.timeParse("%Q")
+
+          x = d3.scaleTime().range([0, width])
+          y = d3.scaleLinear().range([height, 0])
+
+          valueline = d3.line()
+              .x((d) -> return x(d.date))
+              .y((d) -> return y(d.value))
+
+          
+          svg = d3.select("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")")
+
+          selectedData.forEach((d) ->
+              d.date = parseInt(d.key.split(':')[2]);
+              d.value = +d.value;
+              return d;
+          )
+          
+          x.domain(d3.extent(selectedData, (d) -> return d.date))
+          y.domain([0, d3.max(selectedData, (d) -> return d.value+1 )])
+
+          svg.append("path")
+              .data([selectedData])
+              .attr("class", "line")
+              .attr("d", valueline)
+
+          svg.append("g")
+              .attr("transform", "translate(0," + height + ")")
+              .call(d3.axisBottom(x))
+
+          svg.append("g")
+              .call(d3.axisLeft(y))
+
           $('.chart').show()
 
 
