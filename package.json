@@ -6,7 +6,7 @@
   "scripts": {
     "start": "./bin/start",
     "compile": "./bin/compile",
-    "test": "./bin/test tests/*"
+    "test": "./bin/test test/*"
   },
   "repository": {
     "type": "git",
