@@ -13,6 +13,7 @@ body{
     border: solid 1px transparent;
     border-radius: 5px;
     
+    
 }
 
 
@@ -29,6 +30,12 @@ h1{
     fill: none;
     stroke: steelblue;
     stroke-width: 2px;
+    
+}
+
+.area{
+    fill: lightsteelblue;
+    stroke-width: 0;
 }
 
 .chartComponent{

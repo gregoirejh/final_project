@@ -40,11 +40,9 @@ block content
           "<option value=" + collection + ">" + collection + "</option>"
         $('.collections').html(html.join(''))
 
-      $('#show-metrics').click (e) ->
-        e.preventDefault()
-        keyValue = $('.collections').val()
-
-        $.get "/metrics.json", {}, (data) ->
+        $('#show-metrics').click (e) ->
+          e.preventDefault()
+          keyValue = $('.collections').val()
     
           selectedData = data.reduce (acc, item) ->
             if item.key.split(':')[1] == keyValue
@@ -58,14 +56,19 @@ block content
           width = 960 - margin.left - margin.right
           height = 500 - margin.top - margin.bottom
 
-          parseTime = d3.timeParse("%Q")
+          format = d3.timeFormat("%a %Q")
 
           x = d3.scaleTime().range([0, width])
           y = d3.scaleLinear().range([height, 0])
 
+          area = d3.area()
+            .x((d) -> return x(d.date))
+            .y0(height)
+            .y1((d) -> return y(d.value))
+
           valueline = d3.line()
-              .x((d) -> return x(d.date))
-              .y((d) -> return y(d.value))
+            .x((d) -> return x(d.date))
+            .y((d) -> return y(d.value))
 
           
           svg = d3.select("svg")
@@ -76,18 +79,23 @@ block content
                     "translate(" + margin.left + "," + margin.top + ")")
 
           selectedData.forEach((d) ->
-              d.date = parseInt(d.key.split(':')[2]);
-              d.value = +d.value;
-              return d;
+              d.date = parseInt(d.key.split(':')[2])
+              d.value = +d.value
+              return d
           )
           
           x.domain(d3.extent(selectedData, (d) -> return d.date))
           y.domain([0, d3.max(selectedData, (d) -> return d.value+1 )])
 
           svg.append("path")
-              .data([selectedData])
-              .attr("class", "line")
-              .attr("d", valueline)
+            .datum(selectedData)
+            .attr("class", "area")
+            .attr("d", area);
+
+          svg.append("path")
+            .data([selectedData])
+            .attr("class", "line")
+            .attr("d", valueline)
 
           svg.append("g")
               .attr("transform", "translate(0," + height + ")")
