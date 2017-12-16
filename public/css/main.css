@@ -3,19 +3,11 @@ body{
     background-color: #EAEFF5;
 }
 
-.container{
-    text-align: center;
-}
-
-
 .chart{
     background-color: rgb(255, 255, 255);
     border: solid 1px transparent;
-    border-radius: 5px;
-    
-    
+    border-radius: 5px;   
 }
-
 
 .lab{
     margin: 1px;
@@ -41,4 +33,19 @@ h1{
 .chartComponent{
     padding: 5px;
     margin: 30px auto;
+}
+
+.collections{
+    width: 400px;
+}
+
+h1{
+    font-size: 2rem;
+    margin: 10px auto;
+}
+
+.container-flex{
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
 }

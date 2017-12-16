@@ -10,21 +10,24 @@ block head
   link(rel='stylesheet', href='/css/main.css')
 
 block content  
-  div.column.container-flex.w-25.mt-5.ml-5.menu
-    div.row
-      button.btn.btn-danger.mr-3(href='/logout' onClick='document.location.href="/logout"') Logout
-      button.btn.btn-success(href='/addMetrics' onClick='document.location.href="/addMetrics"') Add Metrics !
-    div.row
-      label(for="collections") Metrics collection :
-      select.form-control(class='collections' name="collections")
-    div.row
-      button#show-metrics(type="button" class="btn btn-default") Bring my metrics
   div.container
-    div.col-md-12
-      h1 #{text}
-      button#show-metrics(type="button" class="btn btn-default") Bring my metrics
-      div.chartComponent
-        svg.chart(width="960" height="500")
+    div.row.justify-content-end
+      div.col-md-3.col-3.mt-2
+        button.btn.btn-warning.mr-3(href='/logs' onClick='window.open(document.location.href="/logging"); return false;') Logs
+        button.btn.btn-danger.mr-3(href='/logout' onClick='document.location.href="/logout"') Logout
+    div.row
+      div.column.container-flex.w-50.ml-auto.mr-auto.mt-5
+        div.row.justify-content-center
+          h1 Select your collections !
+        div.row.justify-content-center.mt-3
+          select.form-control(class='collections' name="collections")
+          button.btn.btn-success.ml-2(href='/addMetrics' onClick='document.location.href="/addMetrics"') Add Metrics !
+        div.row.justify-content-center.mt-4
+          button.btn.btn-primary(type="button" id="show-metrics") Bring my metrics
+    div.row
+      div.col-md-12
+        div.chartComponent
+          svg.chart(width="960" height="500")
       
       
   script 
