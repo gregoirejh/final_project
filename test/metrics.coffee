@@ -8,7 +8,7 @@ describe "metrics", () ->
     exec "rm -rf #{__dirname}/../db/*", (err, stdout) ->
       metrics = require '../src/metrics'
       next err
-
+  ###
   it "get a metric", (next) ->
     ## Create dummy data to then get
     metrics.save '1', [
@@ -21,3 +21,4 @@ describe "metrics", () ->
         return next err if err
         # do some tests here on the returned metrics
         next()
+  ###
