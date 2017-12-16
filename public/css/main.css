@@ -1,10 +1,16 @@
 
 body{
-    background-color: rgb(219, 219, 219);
+    background-color: #EAEFF5;
 }
 
 .container{
     text-align: center;
+}
+
+.menu {
+  background-color: #F9F9F9;
+  border-radius: 15px;
+  padding: 30px;
 }
 
 .chart .bar {
@@ -36,4 +42,12 @@ body{
 
 h1{
     margin: 30px 0px;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-auto {
+  margin-right: auto;
 }

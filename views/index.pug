@@ -4,20 +4,24 @@ block head
   // Here will go our css/js links
   script(type="text/javascript" src="/js/d3.v4.min.js" charset="utf-8")
   script(type="text/javascript" src="/js/jquery-3.2.1.min.js" charset="utf-8")
-  script(type="text/javascript" src="/js/bootstrap.min.js" charset="utf-8")
+  script(type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js" charset="utf-8")
   script(type="text/javascript" src="/js/index.js" charset="utf-8")
-  link(rel='stylesheet', href='/css/bootstrap.min.css')
+  link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css')
   link(rel='stylesheet', href='/css/main.css')
-  link(rel='stylesheet', href='/css/bootstrap-theme.min.css')
 
 block content  
-  button.btn.btn-danger(href='/logout' onClick='document.location.href="/logout"') Logout
-  button.btn.btn-success(href='/addMetrics' onClick='document.location.href="/addMetrics"') Add Metrics !
-  select.form-control(class='collections')
+  div.column.container-flex.w-25.mt-5.ml-5.menu
+    div.row
+      button.btn.btn-danger.mr-3(href='/logout' onClick='document.location.href="/logout"') Logout
+      button.btn.btn-success(href='/addMetrics' onClick='document.location.href="/addMetrics"') Add Metrics !
+    div.row
+      label(for="collections") Metrics collection :
+      select.form-control(class='collections' name="collections")
+    div.row
+      button#show-metrics(type="button" class="btn btn-default") Bring my metrics
   div.container
     div.col-md-12
       h1 #{text}
-      button#show-metrics(type="button" class="btn btn-default") Bring my metrics
       #metrics
       div.chart
       
@@ -33,7 +37,7 @@ block content
             acc.push(collection)
           return acc
         , []
-        
+
         $('.collections').empty()
 
         html = collections.map (collection) ->
