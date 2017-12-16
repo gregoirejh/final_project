@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>My Web Page</title>
+    <!-- Here will go our css/js links-->
+    <script type="text/javascript" src="/js/d3.v4.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/jquery-3.2.1.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/js/bootstrap.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/index.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body>
+    <div class="column container-flex w-25 mt-5 ml-5 menu">
+      <div class="row">
+        <button class="btn btn-danger mr-3" href="/logout" onClick="document.location.href=&quot;/logout&quot;">Logout</button>
+        <button class="btn btn-success" href="/addMetrics" onClick="document.location.href=&quot;/addMetrics&quot;">Add Metrics !</button>
+      </div>
+      <div class="row">
+        <label for="collections">Metrics collection :</label>
+        <select class="form-control collections" name="collections"></select>
+      </div>
+      <div class="row">
+        <button class="btn btn-default" id="show-metrics" type="button">Bring my metrics</button>
+      </div>
+    </div>
+    <div class="container">
+      <div class="col-md-12">
+        <h1></h1>
+        <div id="metrics"></div>
+        <div class="chart"></div>
+      </div>
+    </div>
+    <script>
+       (function() {
+  $('.chart').hide();
+
+  $.get('/metrics.json', {}, function(data) {
+    var collections, html;
+    collections = data.reduce(function(acc, item) {
+      var collection;
+      console.log(item);
+      collection = item.key.split(':')[1];
+      if (acc.indexOf(collection) === -1) {
+        acc.push(collection);
+      }
+      return acc;
+    }, []);
+    $('.collections').empty();
+    html = collections.map(function(collection) {
+      return "<option value=" + collection + ">" + collection + "</option>";
+    });
+    return $('.collections').html(html.join(''));
+  });
+
+  $('#show-metrics').click(function(e) {
+    e.preventDefault();
+    return $.get("/metrics.json", {}, function(data) {
+      var row;
+      row = d3.select(".chart").selectAll("div").data(data).enter().append("div").attr('class', 'row');
+      row.append("div").attr('class', 'lab col-sm-3').text(function(d) {
+        return Date(d.key.split(':')[2]);
+      });
+      row.append("div").attr('class', 'bar col-sm-9').style("width", function(d) {
+        return 30 * d.value + "px";
+      }).text(function(d) {
+        return d.value;
+      });
+      return $('.chart').show();
+    });
+  });
+
+}).call(this);
+
+    </script>
+  </body>
+</html>
