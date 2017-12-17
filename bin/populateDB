@@ -22,15 +22,15 @@ user.save { username: "elliot@ece.fr", password: "root" }, (err) ->
 metricsItems = if metricsArgs then flatten([metricsArgs]).map(JSON.parse) else []
 
 metricsToInsert = flatten([
-  timestamp:(new Date "2013-11-04 14:00 UTC").getTime(), value:12
+  timestamp: new Date("2013-11-04 14:00 UTC").getTime(), value:12
 ,
-  timestamp:(new Date "2013-11-04 14:10 UTC").getTime(), value:13
+  timestamp: new Date("2013-11-04 14:10 UTC").getTime(), value:13
 ,
-  timestamp:(new Date "2013-11-04 14:20 UTC").getTime(), value:9
+  timestamp: new Date("2013-11-04 14:20 UTC").getTime(), value:9
 ,
-  timestamp:(new Date "2013-11-04 11:20 UTC").getTime(), value:20
+  timestamp: new Date("2013-11-04 11:20 UTC").getTime(), value:20
 ,
-  timestamp:(new Date "2013-11-04 13:20 UTC").getTime(), value:25
+  timestamp: new Date("2013-11-04 13:20 UTC").getTime(), value:25
 ,
   metricsItems
 ,
@@ -41,9 +41,9 @@ metrics.save "admin", metricsToInsert, (err) ->
   console.log "Population terminated for user admin!"
 
 metricsToInsert = flatten([
-  timestamp:(new Date "2013-11-04 14:00 UTC").getTime(), value:35
+  timestamp:new Date("2013-11-04 14:00 UTC").getTime(), value:35
 ,
-  timestamp:(new Date "2013-11-04 14:10 UTC").getTime(), value:45
+  timestamp:new Date("2013-11-04 14:10 UTC").getTime(), value:45
 ,
 ])
 

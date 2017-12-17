@@ -25,7 +25,7 @@ module.exports =  (db) ->
       { timestamp, value } =  metric
       ws.write
         key: "#{user}:#{collectionId}:#{timestamp}"
-        value: value
+        value: Number.parseInt(value)
     ws.end()
 
   del: (key, callback) ->

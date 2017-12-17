@@ -110,7 +110,7 @@ app.get '/metrics.json', authCheck, (req, res, next) ->
 
 app.post '/metrics.json', authCheck, (req, res, next) -> 
   username = token.decrypt(req.session.jwt).username
-  metrics.save(username, flatten([req.body.value]), (err) ->
+  metrics.save(username, flatten([req.body.metrics]), (err) ->
     throw next err if err
     res.redirect '/')
 

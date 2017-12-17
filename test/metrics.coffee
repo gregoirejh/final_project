@@ -1,5 +1,4 @@
 EventEmitter = require 'events'
-{exec} = require 'child_process'
 should = require 'should'
 sinon = require 'sinon'
 metricDb = require('../src/db') "#{__dirname}/../db"
@@ -34,9 +33,9 @@ describe "metrics", () ->
     sandbox.stub(metricDb, 'createWriteStream').returns(writeStream)
     metrics = require('../src/metrics')(metricDb)
     metrics.save '1', [
-      timestamp:(new Date '2015-11-04 14:00 UTC').getTime(), value:23
+      timestamp:new Date('2015-11-04 14:00 UTC').getTime(), value:23
      ,
-      timestamp:(new Date '2015-11-04 14:10 UTC').getTime(), value:56
+      timestamp:new Date('2015-11-04 14:10 UTC').getTime(), value:56
     ], (err) ->
       should.ok metricDb.createWriteStream.calledOnce
       return next err if err
