@@ -76,10 +76,10 @@ or
 
 ### Populate DataBase & default account
 
-> Execute the populate script located in /bin/populateDB
-> Then, you can use a defaut account with the following parameters : 
-  > username : admin
-  > password: admin
+Execute the populate script located in /bin/populateDB
+Then, you can use a defaut account with the following parameters : 
+  - username : admin
+  - password: admin
 
 ### Pages
 
