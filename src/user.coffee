@@ -8,4 +8,4 @@ module.exports = (db) ->
     db.put "user:#{user.username}", user.password, callback
 
   remove: (username, callback) ->
-    db.del "user:#{user.username}", callback
+    db.del "user:#{username}", callback
