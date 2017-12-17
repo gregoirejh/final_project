@@ -9,7 +9,7 @@ module.exports =  (db) ->
     rs = db.createReadStream()
     result = []
     rs.on 'data', (data) -> result.push(data)
-    rs.on 'error', (err) -> callback err,null
+    rs.on 'error', (err) -> callback err, null
     rs.on 'close', () -> callback null, result
     
   # save(id, metrics, callback)

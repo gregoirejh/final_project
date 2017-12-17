@@ -13,15 +13,15 @@ block content
   div.container
     div.row.justify-content-end
       div.col-md-3.col-md-3.mt-2
-        button.btn.btn-warning.mr-3(href='/logs' onClick='window.open(document.location.href="/logging"); return false;') Logs
-        button.btn.btn-danger.mr-3(href='/logout' onClick='document.location.href="/logout"') Logout
+        button.btn.btn-warning.mr-3(onClick='window.open(document.location.href="/logging"); return false;') Logs
+        button.btn.btn-danger.mr-3(onClick='document.location.href="/logout"') Logout
     div.row
       div.column.container-flex.w-50.ml-auto.mr-auto.mt-5
         div.row.justify-content-center
           h1 Select your collections !
         div.row.justify-content-center.mt-3
           select.form-control(class='collections' name="collections")
-          button.btn.btn-success.ml-2(href='/addMetrics' onClick='document.location.href="/addMetrics"') Add Metrics !
+          button.btn.btn-success.ml-2(onClick='document.location.href="/addMetrics"') Add Metrics !
         div.row.justify-content-center.mt-4
           button.btn.btn-primary(type="button" id="show-metrics") Bring my metrics
     div.row.mt-3
@@ -51,6 +51,7 @@ block content
 
         $('#show-metrics').click (e) ->
           e.preventDefault()
+          d3.selectAll("svg > *").remove()
           keyValue = $('.collections').val()
     
           selectedData = data.reduce (acc, item) ->
