@@ -11,14 +11,14 @@ block content
   #form.container-flex.w-25.ml-auto.mr-auto.mt-5
     form#addMetrics(action='/metrics.json', method="post")
       .form-group
-        input.form-control(type='text', name="metrics[0][value]", placeholder="value")
-        input.form-control.mt-2(type='text', name="metrics[0][timestamp]", placeholder="timestamp")
+        input.form-control(type='text', name="metrics[0][value]", placeholder="value", value="21")
+        input.form-control.mt-2(type='text', name="metrics[0][timestamp]", placeholder="timestamp", value="1383574200000")
       .form-group
-        input.form-control(type='text', name="metrics[1][value]", placeholder="value")
-        input.form-control.mt-2(type='text', name="metrics[1][timestamp]", placeholder="timestamp")
+        input.form-control(type='text', name="metrics[1][value]", placeholder="value", value="45")
+        input.form-control.mt-2(type='text', name="metrics[1][timestamp]", placeholder="timestamp", value="1383581400000")
       .form-group
-        input.form-control(type='text', name="metrics[2][value]", placeholder="value")
-        input.form-control.mt-2(type='text', name="metrics[2][timestamp]", placeholder="timestamp")
+        input.form-control(type='text', name="metrics[2][value]", placeholder="value", value="150")
+        input.form-control.mt-2(type='text', name="metrics[2][timestamp]", placeholder="timestamp", value="1383592200000")
       .container
         button#login_submit.btn.btn-primary.btn-block(type='submit') Add
         hr
