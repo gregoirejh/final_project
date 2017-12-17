@@ -72,6 +72,25 @@ or
 
 > Deletes the target metric
 
+## Front specs
+
+### Populate DataBase & default account
+
+> Execute the populate script located in /bin/populateDB
+> Then, you can use a defaut account with the following parameters : 
+  > username : admin
+  > password: admin
+
+### Pages
+
+Across this project, you can access to different pages:
+  - / : allows the user to access to his metrics displayed with a chart after selecting his collections 
+  - /Login : allows the user to login in order to access to his metrics
+  - /signin : allows the user to create an account
+  - /logout : allows the user to log out
+  - /logging : allows the user to visit logs
+  - /addMetrics :  allows the user to add Metrics
+
 ## 🛠 Testing
 
 Only critical parts of the code have been tested (users-related and metrics-related actions). We have been using [ShouldJS](https://shouldjs.github.io/) for expectations and [SinonJS](http://sinonjs.org/) for mocking.
