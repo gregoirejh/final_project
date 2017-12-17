@@ -6,7 +6,6 @@ LevelStore = require('level-session-store')(session)
 morgan = require 'morgan'
 errorhandler = require 'errorhandler'
 
-
 userDb  = require('./db') "#{__dirname}/../db/user"
 metricDb = require('./db') "#{__dirname}/../db"
 
@@ -96,7 +95,8 @@ app.get '/logout', (req, res) ->
   delete req.session.jwt
   res.redirect '/login'
 
-#Logging
+# LOGGING
+
 app.get '/Logging', (req,res) ->
   res.render 'logging'
 
