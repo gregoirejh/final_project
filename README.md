@@ -4,44 +4,33 @@
 
 ## 🚦 Routes
 
-> GET /login
+#### GET /login
 
-Renders the login page  
+> Renders the login page  
 
-> GET /signin
+#### GET /signin
 
-Renders the signin page  
+> Renders the signin page  
 
-> GET /addMetrics
+#### GET /addMetrics
 
-Renders the addMetrics page  
+> Renders the addMetrics page  
 
-> GET /logout
+#### GET /logout
 
-Renders the logout page  
+> Renders the logout page  
 
-> GET /Logging
+#### GET /Logging
 
-Renders the logs of the current session  
+> Renders the logs of the current session  
 
-> GET /metrics.json
+#### GET /metrics.json
 
-Fetches the metrics of the current user  
+> Fetches the metrics of the current user  
 
-> POST /login
+#### POST /login
 
-Authenticates an user 
-
-```javascript
-{
-  username: String,
-  password: String,
-}
-``` 
-
-> POST /signin
-
-Adds an user 
+> Authenticates an user 
 
 ```javascript
 {
@@ -50,9 +39,20 @@ Adds an user
 }
 ``` 
 
-> POST /metrics.json
+#### POST /signin
 
-Adds a new metric to the user's ones
+> Adds an user 
+
+```javascript
+{
+  username: String,
+  password: String,
+}
+``` 
+
+#### POST /metrics.json
+
+> Adds a new metric to the user's ones
 
 ```javascript
 {
@@ -68,9 +68,9 @@ or
 ]
 ```
 
-> DELETE /metrics.json/:key
+#### DELETE /metrics.json/:key
 
-Deletes the target metric
+> Deletes the target metric
 
 ## 🛠 Testing
 
